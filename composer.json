@@ -1,0 +1,15 @@
+{
+  "name": "sockets/0.0.1",
+  "description": "sockets chat",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "YRadov",
+      "email": "radov.yuriy@ukr.net"
+    }
+  ],
+  "require": {
+    "cboden/ratchet": "v0.3.5"
+  }
+}
