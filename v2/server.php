@@ -6,13 +6,15 @@ use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use api\v2\Chat;
 
+const PORT = 8282;
+
 $server = IoServer::factory(
     new HttpServer(
         new WsServer(
             new Chat()
         )
     ),
-    8080
+    PORT
 );
 
 $server->run();

@@ -7,6 +7,11 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
 class Chat implements MessageComponentInterface {
+
+    // ACTIONS
+    const STOP_SERVER = 'stop_server';
+
+
     protected $clients;
 
     public function __construct() {
@@ -21,16 +26,37 @@ class Chat implements MessageComponentInterface {
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
-            }
+        $request = $this->parseRequest($msg);
+        echo '<pre>';
+        print_r($request);
+        echo '</pre>';
+
+        switch ($request->action) {
+            case self::STOP_SERVER:
+                exit('Server stopped.');
+                break;
+            default:
+
         }
+
+//        $numRecv = count($this->clients) - 1;
+//        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+//            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+//
+//        foreach ($this->clients as $client) {
+//            if ($from !== $client) {
+//                // The sender is not the receiver, send to each client connected
+//                $client->send($msg);
+//            }
+//        }
+    }
+
+    public function parseRequest($msg) {
+        $pattern = '%(\{.*\})%';
+//        $pattern = '%(\{.*(?:\}.*)*\})%';
+        preg_match($pattern, $msg, $request);
+        return json_decode($request[0]);
     }
 
     public function onClose(ConnectionInterface $conn) {

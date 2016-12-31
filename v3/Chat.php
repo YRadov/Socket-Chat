@@ -1,5 +1,5 @@
 <?php
-namespace api\v2;
+namespace api\v3;
 
 require_once __DIR__ . '/../_header.php';
 
@@ -19,11 +19,9 @@ class Chat implements MessageComponentInterface {
         $this->clients->attach($conn);
 
         echo "New connection! ({$conn->resourceId})\n";
-        foreach ($this->clients as $client) {
-            if ($conn == $client) {
-                $client->send('{"action":"connect","connectID":"' . $conn->resourceId . '","IP":"' . $conn->remoteAddress .'"}');
-            }
-        }
+
+        $conn->send('{"action":"connect","connectID":"' . $conn->resourceId . '","IP":"' . $conn->remoteAddress .'"}');
+        $conn->send('Hello ' . $conn->Session->get('name'));
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {

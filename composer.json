@@ -10,7 +10,8 @@
     }
   ],
   "require": {
-    "cboden/ratchet": "v0.3.5"
+    "cboden/ratchet": "v0.3.5",
+    "php-activerecord/php-activerecord": "v1.1.2"
   },
   "autoload": {
     "psr-4": {

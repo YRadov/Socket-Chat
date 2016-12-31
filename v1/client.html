@@ -7,54 +7,50 @@
     <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
-<h1 id="socket_id"></h1>
+<h1>ТЕСТОВЫЕ ЗАПРОСЫ</h1>
 
+<div class="form-group">
+    <label for="message">ACTION</label>
+    <input type="text" class="form-control" id="action" placeholder="...">
+</div>
+<div class="form-group">
+    <label for="message">TOKEN</label>
+    <input type="text" class="form-control" id="token" placeholder="...">
+</div>
 <div class="form-group">
     <label for="message">MESSAGE</label>
     <input type="text" class="form-control" id="message" placeholder="...">
 </div>
+<div class="form-group">
+    <label for="message">IDS</label>
+    <input type="text" class="form-control" id="ids" placeholder="...">
+</div>
 <button class="btn btn-primary" id="send">ОТПРАВИТЬ</button>
-<button class="btn btn-primary" id="sendBrowser">ОТПРАВИТЬ ДЛЯ БРАУЗЕРА</button>
 <div class="scripts">
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
 
-        var conn = new WebSocket('ws://localhost:8282');
-        conn.onopen = function(e) {
-            console.log("Connection established!");
-        };
-
-        conn.onmessage = function(e) {
-            console.log(e.data);
-            var response = JSON.parse(e.data);
-            switch (response.action){//{"action":"connect","connectID":"108","IP":"127.0.0.1"}
-                case 'connect':
-                    $('#socket_id').html('Номер Вашего соединения' + response.connectID + '; Ваш IP:' + response.IP);
-                    break;
-                default:
-                    console.log('Пустой action');
-
-            }
-        };
-
-        var conn2 = new WebSocket('ws://localhost:8181');
-        conn.onopen = function(e) {
-            console.log("Connection to port 8181 established!");
-        };
-
         $('#send').on('click', function (e) {
+            var action = $('#action').val();
+            var token = $('#token').val();
             var message = $('#message').val();
-            console.log($text);
+            console.log(message);
             var data = {
                 action: null,
                 token: null,
                 data: {
                     message: message,
                     param1 : null,
-                    param2 : null
+                    param2 : {
+                        message: message,
+                        param1 : null,
+                        param2 : null
+                    }
                 }
             };
+            data = JSON.stringify(data);
+            console.log(data);
             $.ajax({
                 url: 'http://localhost:8181',
                 type: 'POST',
